@@ -3,6 +3,8 @@ import static java.lang.Math.*;
 
 import java.nio.FloatBuffer;
 
+import com.devx.flappy.utils.BufferUtils;
+
 public class Matrix4f {
 	
 	public static final int SIZE=4*4;
@@ -92,7 +94,7 @@ public class Matrix4f {
 	}
 	
 	public FloatBuffer toFLoatBuffer() {
-		return 0;
+		return BufferUtils.createFloatBuffer(elements);
 	}
 	
 }
