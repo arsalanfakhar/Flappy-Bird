@@ -8,8 +8,11 @@ import static org.lwjgl.system.MemoryUtil.*;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 
+import com.devx.flappy.graphics.Shader;
 import com.devx.flappy.input.Input;
-
+import com.devx.flappy.level.Level;
+import com.devx.flappy.math.Matrix4f;
+import com.devx.flappy.math.*;
 public class Main implements Runnable {
 
 	private int width = 1000;
@@ -17,6 +20,7 @@ public class Main implements Runnable {
 	private long window;
 	private Thread thread;
 	private boolean running=false;
+	private Level level;
 	
 	public void start() {
 		running=true;
@@ -64,7 +68,16 @@ public class Main implements Runnable {
 		glEnable(GL_DEPTH_TEST);
 		
 		System.out.println("Open GL:"+glGetString(GL_VERSION));
+		
+		Shader.loadAll();
+		Shader.BG.enable();
+		Matrix4f pr_matrix=Matrix4f.orthographic(-16.0f, 16.0f, -10.0f*9.0f/16.0f, 10.0f*9.0f/16.0f, -1.0f, 1.0f);
+		
+		Shader.BG.setUniformMat4f("pr_matrix", pr_matrix);
+		Shader.BG.disable();
+		level = new Level();
 	}
+	
 	
 	
 	//it will start on a separate thread
@@ -92,6 +105,10 @@ public class Main implements Runnable {
 
 	private void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		level.render();
+		int error = glGetError();
+		if (error != GL_NO_ERROR)
+			System.out.println(error);
 		glfwSwapBuffers(window);
 	}
 	

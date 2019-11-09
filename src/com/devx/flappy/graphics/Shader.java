@@ -13,6 +13,8 @@ public class Shader {
 	public static final int VERTEX_ATTRIB=0;
 	public static final int TCOORD_ATTRIB=1;
 	
+	public static Shader BG;
+	private boolean enable=false;
 	private final int ID;
 	//inorder to avoid cpu from calling again ang again we cache the location of the shader
 	//as it remain same throughout the program
@@ -22,7 +24,9 @@ public class Shader {
 	public Shader(String vertex,String fragment) {
 		ID=ShaderUtils.load(vertex, fragment);
 	}
-
+	public static void loadAll() {
+		BG=new Shader("shaders/bg.vert","shaders/bg.frag");
+	}
 	//get shader to setup its things
 	public int getUniform(String name) {
 		if(locationCache.containsKey(name))
@@ -62,6 +66,7 @@ public class Shader {
 	}
 	
 	public void setUniformMat4f(String name, Matrix4f matrix) {
+		if(!enable) enable();
 		//as we already have in coloumn major no need to transpose	
 		glUniformMatrix4fv(getUniform(name), false, matrix.toFLoatBuffer());
 	}
@@ -69,11 +74,13 @@ public class Shader {
 	//bind the program
 	public void enable() {
 		glUseProgram(ID);
+		enable=true;
 	}
 	
 	//unbind the program
 	public void disable() {
 		glUseProgram(0);
+		enable=false;
 	}
 	
 }
