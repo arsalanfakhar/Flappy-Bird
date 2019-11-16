@@ -3,6 +3,8 @@ package com.devx.flappy.graphics;
 import com.devx.flappy.math.Matrix4f;
 import com.devx.flappy.math.Vector3f;
 import com.devx.flappy.utils.ShaderUtils;
+import com.devx.flappy.graphics.Shader;
+
 import static org.lwjgl.opengl.GL20.*;
 
 import java.util.HashMap;
@@ -13,7 +15,7 @@ public class Shader {
 	public static final int VERTEX_ATTRIB=0;
 	public static final int TCOORD_ATTRIB=1;
 	
-	public static Shader BG;
+	public static Shader BG,BIRD,PIPE,FADE;
 	private boolean enable=false;
 	private final int ID;
 	//inorder to avoid cpu from calling again ang again we cache the location of the shader
@@ -26,6 +28,9 @@ public class Shader {
 	}
 	public static void loadAll() {
 		BG=new Shader("shaders/bg.vert","shaders/bg.frag");
+		BIRD = new Shader("shaders/bird.vert", "shaders/bird.frag");
+		PIPE = new Shader("shaders/pipe.vert", "shaders/pipe.frag");
+		FADE = new Shader("shaders/fade.vert", "shaders/fade.frag");
 	}
 	//get shader to setup its things
 	public int getUniform(String name) {
@@ -43,10 +48,11 @@ public class Shader {
 	
 	
 	//uniform variables help us provide data from the CPU
+
+	//this for int
 	public void setUniform1i(String name, int value) {
-		
+		if (!enable) enable();
 		glUniform1i(getUniform(name), value);
-		
 	}
 	
 	//uniform variables help us provide data from the CPU 

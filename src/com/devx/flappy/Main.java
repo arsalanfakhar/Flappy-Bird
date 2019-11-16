@@ -3,6 +3,7 @@ package com.devx.flappy;
 import static org.lwjgl.glfw.GLFW.*;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 import org.lwjgl.glfw.GLFWVidMode;
@@ -12,7 +13,7 @@ import com.devx.flappy.graphics.Shader;
 import com.devx.flappy.input.Input;
 import com.devx.flappy.level.Level;
 import com.devx.flappy.math.Matrix4f;
-import com.devx.flappy.math.*;
+
 public class Main implements Runnable {
 
 	private int width = 1000;
@@ -33,13 +34,14 @@ public class Main implements Runnable {
 		//now we will use glfw which is a c library like glut
 		if(!glfwInit()) {
 			throw new IllegalStateException("Unable to initialize GLFW");
+			
 		}
 		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 		
 		//window will have an id
 		window=glfwCreateWindow(width, height, "Flappy", NULL, NULL);
 		if(window==NULL) {
-			
+			System.err.println("Unable to create GLFW window!");
 			return;
 		}
 		
@@ -56,7 +58,12 @@ public class Main implements Runnable {
 		
 		glfwMakeContextCurrent(window);
 		glfwShowWindow(window);
+		GL.createCapabilities();
 		
+ 		glEnable(GL_DEPTH_TEST);
+		glActiveTexture(GL_TEXTURE1);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
@@ -70,11 +77,15 @@ public class Main implements Runnable {
 		System.out.println("Open GL:"+glGetString(GL_VERSION));
 		
 		Shader.loadAll();
-		Shader.BG.enable();
-		Matrix4f pr_matrix=Matrix4f.orthographic(-16.0f, 16.0f, -10.0f*9.0f/16.0f, 10.0f*9.0f/16.0f, -1.0f, 1.0f);
-		
+		Matrix4f pr_matrix = Matrix4f.orthographic(-10.0f, 10.0f, -10.0f * 9.0f / 16.0f, 10.0f * 9.0f / 16.0f, -1.0f, 1.0f);
 		Shader.BG.setUniformMat4f("pr_matrix", pr_matrix);
-		Shader.BG.disable();
+		Shader.BG.setUniform1i("tex", 1);
+		
+		Shader.BIRD.setUniformMat4f("pr_matrix", pr_matrix);
+		Shader.BIRD.setUniform1i("tex", 1);
+		
+		Shader.PIPE.setUniformMat4f("pr_matrix", pr_matrix);
+		Shader.PIPE.setUniform1i("tex", 1);
 		level = new Level();
 	}
 	

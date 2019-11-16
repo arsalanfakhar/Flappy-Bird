@@ -14,6 +14,10 @@ public class VertexArray {
 	private int vao,vbo,ibo,tbo;
 	//texture cordinate object
 	private int count;
+	public VertexArray(int count) {
+		this.count = count;
+		vao = glGenVertexArrays();
+	}
 	
 	 public VertexArray(float[] vertices,byte[] indices,float[] textureCordinates) {
 		 
@@ -49,14 +53,19 @@ public class VertexArray {
 	 public void bind() {
 
 		 glBindVertexArray(vao);
+		 if(ibo>0)
 		 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,ibo); 
 	 }
 	 public void unbind() {
 		 glBindVertexArray(0);
+		 if(ibo>0)
 		 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0); 
 	 }
      public void draw() {
+    	 if(ibo>0)
     	 glDrawElements(GL_TRIANGLES,count,GL_UNSIGNED_BYTE,0);
+    	 else
+ 			glDrawArrays(GL_TRIANGLES, 0, count);
      }
      public void render() {
      bind();
