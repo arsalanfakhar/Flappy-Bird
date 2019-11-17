@@ -158,6 +158,5 @@ public class Level {
 		Shader.FADE.setUniform1f("time", time);
 		fade.render();
 		Shader.FADE.disable();
-	}
-	
+	}	
 }

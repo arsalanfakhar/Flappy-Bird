@@ -1,5 +1,7 @@
 package com.devx.flappy.level;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 import com.devx.flappy.graphics.Shader;
 import com.devx.flappy.graphics.Texture;
 import com.devx.flappy.graphics.VertexArray;
@@ -9,7 +11,7 @@ import com.devx.flappy.math.Vector3f;
 
 public class Bird {
 
-	private float SIZE = 1.0f;
+private float SIZE = 1.0f;
 	private VertexArray mesh;
 	private Texture texture;
 	
@@ -43,7 +45,7 @@ public class Bird {
 	
 	public void update() {
 		position.y -= delta;
-		if (Input.isKeyDown(32))
+		if (Input.isKeyDown(GLFW_KEY_SPACE)) 
 			delta = -0.15f;
 		else
 			delta += 0.01f;
