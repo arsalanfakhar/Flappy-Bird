@@ -8,7 +8,8 @@ public class Matrix4f {
 	
 	public static final int SIZE = 4 * 4;
 	
-	//single dimension
+	//single dimensional array
+	//open gl do not want multi dimension array
 	public float[] elements = new float[SIZE];
 	
 	public Matrix4f() {
@@ -22,6 +23,8 @@ public class Matrix4f {
 			result.elements[i] = 0.0f;
 		}
 		//making identity matrix of 4*4
+		
+		//row +coloumn
 		result.elements[0 + 0 * 4] = 1.0f;
 		result.elements[1 + 1 * 4] = 1.0f;
 		result.elements[2 + 2 * 4] = 1.0f;
@@ -29,7 +32,7 @@ public class Matrix4f {
 		
 		return result;
 	}
-	
+				
 	public static Matrix4f orthographic(float left, float right, float bottom, float top, float near, float far) {
 		Matrix4f result = identity();
 		
@@ -59,7 +62,7 @@ public class Matrix4f {
 	
 	public static Matrix4f rotate(float angle) {
 		Matrix4f result = identity();
-		//convert angle to rad
+		//convert angle to rad as java takes angles as radian
 		float r = (float) Math.toRadians(angle);
 		float cos = (float) Math.cos(r);
 		float sin = (float) Math.sin(r);

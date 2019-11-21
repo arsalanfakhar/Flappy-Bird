@@ -14,13 +14,13 @@ public class BufferUtils {
 	public static ByteBuffer createByteBuffer(byte[] array) {
 		//as they are onlyy 1 bytes
 		ByteBuffer result = ByteBuffer.allocateDirect(array.length).order(ByteOrder.nativeOrder());
-		//flip to reverse it as lwjgl wants it
+		//flip to reverse it as lwjgl wants it in coloumn major order  
 		result.put(array).flip();
 		return result;
 	} 
 	
 	public static FloatBuffer createFloatBuffer(float[] array) {
-		//as they are onlyy 4 bytes
+		//as they are only 4 bytes
 		FloatBuffer result = ByteBuffer.allocateDirect(array.length*4).order(ByteOrder.nativeOrder()).asFloatBuffer();
 		
 		//flip to reverse it

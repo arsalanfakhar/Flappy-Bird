@@ -10,12 +10,13 @@ in DATA
 
 uniform vec2 bird;
 uniform sampler2D tex;
-uniform int top;
+uniform int top; //top of pipe
 
 void main()
 {
 	vec2 myTc = vec2(fs_in.tc.x, fs_in.tc.y);
-
+	
+	//to invert the pipe invet the texture
 	if (top == 1) {
 		myTc.y = 1 - myTc.y;
 	}

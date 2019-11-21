@@ -8,5 +8,6 @@ void main()
 {
 	if (time > 1.0)
 		discard;
+	//opacity decreases till it hits zero
 	color = vec4(1.0, 1.0, 1.0, 1.0 - time);
 }

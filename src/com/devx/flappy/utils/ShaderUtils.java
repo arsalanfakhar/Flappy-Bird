@@ -9,14 +9,17 @@ public class ShaderUtils {
 	private ShaderUtils() {
 	}
 	
-	//read data or points for shaders
-	public static int load(String vertPath, String fragPath) {
-		String vert = FileUtils.loadAsString(vertPath); 
-		String frag = FileUtils.loadAsString(fragPath);
+	//read data or points for shaders and returns a program
+	public static int load(String vertPathFile, String fragPathFile) {
+		//these are the contents of the shader file
+		String vert = FileUtils.loadAsString(vertPathFile); 
+		String frag = FileUtils.loadAsString(fragPathFile);
 		return create(vert, frag);
 	}
 	
-	//create a shader
+	//create a shader program
+	//A program object is an object to which shader objects can be attached
+	//This provides a mechanism to specify the shader objects that will be linked to create a program.
 	public static int create(String vert, String frag) {
 		int program = glCreateProgram(); 
 		int vertID = glCreateShader(GL_VERTEX_SHADER);
@@ -43,7 +46,7 @@ public class ShaderUtils {
 		glLinkProgram(program);
 		glValidateProgram(program);
 		
-		//to free up the memory
+		//because they are now part of the program so we can free up space
 		glDeleteShader(vertID);
 		glDeleteShader(fragID);
 		

@@ -10,7 +10,7 @@ public class FileUtils {
 		
 		}
 		
-		//load all data from file line by line
+		//load all data from file line by line and return as String
 		public static String loadAsString(String file) {
 			StringBuilder result=new StringBuilder();
 			

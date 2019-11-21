@@ -9,19 +9,20 @@ import javax.imageio.ImageIO;
 
 import com.devx.flappy.utils.BufferUtils;
 
-
+//this class will be used to load images in the games
 public class Texture {
 	private int width, height;
 	
 	//id that was assigned to texture
 	private int texture;
 	
-	public Texture(String path) {
-		texture = load(path);
+	public Texture(String filePath) {
+		texture = load(filePath);
 	}
 	
-	//make array of pixels here
+	
 	private int load(String path) {
+		//make array of pixels here
 		int[] pixels = null;
 		try {
 			BufferedImage image = ImageIO.read(new FileInputStream(path));
@@ -49,7 +50,7 @@ public class Texture {
 		//create a new texture
 		int result = glGenTextures();
 		
-		//bind texture to select it
+		//bind texture to select it and perform operations like selecting a layer in photoshop
 		glBindTexture(GL_TEXTURE_2D, result);
 		
 		//it will disable anti aliasing for our texture and we dont want texture to be blurred if game runs at high resolution
@@ -57,6 +58,7 @@ public class Texture {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		
 		//but now lwjgl doesn need array it need buffers so we convert
+		//select the layer and then apply the texture
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, BufferUtils.createIntBuffer(data));
 		
 		//unbind texture to de select it

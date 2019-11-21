@@ -8,9 +8,9 @@ import com.devx.flappy.math.Vector3f;
 public class Pipe {
 
 	private Vector3f position = new Vector3f();
-	private Matrix4f ml_matrix;
+	private Matrix4f ml_matrix;//model view matrix
 	
-	private static float width = 1.5f, height = 8.0f;
+	private static float width = 1.5f, height = 8.0f; //width and height of pipe
 	private static Texture texture;
 	private static VertexArray mesh;
 	
@@ -39,6 +39,7 @@ public class Pipe {
 	}
 	
 	public Pipe(float x, float y) {
+		//position x and y will be used for collision detection
 		position.x = x;
 		position.y = y;
 		ml_matrix = Matrix4f.translate(position);

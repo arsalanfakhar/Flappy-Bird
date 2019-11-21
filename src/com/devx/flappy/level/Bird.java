@@ -11,13 +11,13 @@ import com.devx.flappy.math.Vector3f;
 
 public class Bird {
 
-private float SIZE = 1.0f;
-	private VertexArray mesh;
+	private float SIZE = 1.0f; //size of the bird
+	private VertexArray mesh; 
 	private Texture texture;
 	
 	private Vector3f position = new Vector3f();
-	private float rot;
-	private float delta = 0.0f;
+	private float rot;//only for z axis of bird as we used ortho 3d
+	private float delta = 0.0f; //for change in y axis
 	
 	public Bird() {
 		float[] vertices = new float[] {
@@ -39,27 +39,28 @@ private float SIZE = 1.0f;
 			1, 1
 		};
 		
-		mesh = new VertexArray(vertices, indices, tcs);
+		mesh = new VertexArray(vertices, indices, tcs); //mesh
 		texture = new Texture("res/bird.png");
 	}
 	
 	public void update() {
-		position.y -= delta;
+		position.y -= delta; //It will have delta value from fall
 		if (Input.isKeyDown(GLFW_KEY_SPACE)) 
-			delta = -0.15f;
+			delta = -0.15f;//to go above
 		else
-			delta += 0.01f;
+			delta += 0.01f;//constant falling of bird
 		
 		rot = -delta * 90.0f;
 	}
 	
 	public void fall() {
-		delta = -0.15f;
+		delta = -0.15f; //amount by which the bird should fall
 	}
 	
 	public void render() {
 		Shader.BIRD.enable();
-		Shader.BIRD.setUniformMat4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rot)));
+		//it will translate as well as rotate the bird
+		Shader.BIRD.setUniformMat4f("ml_matrix", Matrix4f.translate(position).multiply(Matrix4f.rotate(rot))); //this is done for the shader
 		texture.bind();
 		mesh.render();
 		Shader.BIRD.disable();

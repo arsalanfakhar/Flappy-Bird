@@ -12,11 +12,12 @@ public class VertexArray {
 	//the vertices which will be rendered
 	
 	//VAO=Vertex Array Object
-	
+	//There are also other more advanced OpenGL techniques that allows you to increase performance by saving your data directly on 
+	//the graphic card memory, like Vertex Buffer Objects.
 	private int vao, vbo, ibo, tbo;
 		
 	//texture cordinate object
-	private int count;
+	private int count;//amount of vertices we render
 	
 	public VertexArray(int count) {
 		this.count = count;
@@ -26,20 +27,21 @@ public class VertexArray {
 	public VertexArray(float[] vertices, byte[] indices, float[] textureCoordinates) {
 		count = indices.length;
 		
+		//group of buffers which will connect them all
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
 		
 		vbo = glGenBuffers();
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, vbo);//select buffer
 		glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(vertices), GL_STATIC_DRAW);
-		glVertexAttribPointer(Shader.VERTEX_ATTRIB, 3, GL_FLOAT, false, 0, 0);
+		glVertexAttribPointer(Shader.VERTEX_ATTRIB, 3, GL_FLOAT, false, 0, 0); //3 beacause 3 components	
 		glEnableVertexAttribArray(Shader.VERTEX_ATTRIB);
 		
 		//now for texture
 		tbo = glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER, tbo);
 		glBufferData(GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(textureCoordinates), GL_STATIC_DRAW);
-		glVertexAttribPointer(Shader.TCOORD_ATTRIB, 2, GL_FLOAT, false, 0, 0);
+		glVertexAttribPointer(Shader.TCOORD_ATTRIB, 2, GL_FLOAT, false, 0, 0);//since image is 2d
 		glEnableVertexAttribArray(Shader.TCOORD_ATTRIB);
 		
 		ibo = glGenBuffers();
@@ -52,7 +54,7 @@ public class VertexArray {
 	}
 	
 	public void bind() {
-		glBindVertexArray(vao);
+		glBindVertexArray(vao); //to select it
 		if (ibo > 0)
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 	}

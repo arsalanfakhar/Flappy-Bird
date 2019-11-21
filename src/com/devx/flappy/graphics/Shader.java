@@ -15,16 +15,18 @@ public class Shader {
 	public static final int VERTEX_ATTRIB = 0;
 	public static final int TCOORD_ATTRIB = 1;
 	
+	//4 types of shaders are implemented
 	public static Shader BG, BIRD, PIPE, FADE;
 	
 	private boolean enabled = false;
 	
-	private final int ID;
+	private final int ID; //program id for shaders
 	
 	//inorder to avoid cpu from calling again ang again we cache the location of the shader
 	//as it remain same throughout the program
 	private Map<String, Integer> locationCache = new HashMap<String, Integer>();
 	
+	//passing the file path for shaders
 	public Shader(String vertex, String fragment) {
 		ID = ShaderUtils.load(vertex, fragment);
 	}
@@ -33,11 +35,13 @@ public class Shader {
 		BG = new Shader("shaders/bg.vert", "shaders/bg.frag");
 		BIRD = new Shader("shaders/bird.vert", "shaders/bird.frag");
 		PIPE = new Shader("shaders/pipe.vert", "shaders/pipe.frag");
-		FADE = new Shader("shaders/fade.vert", "shaders/fade.frag");
+		FADE = new Shader("shaders/fade.vert", "shaders/fade.frag");	
 	}
 	
-	//get shader to setup its things
+	//get the location of the shader
 	public int getUniform(String name) {
+		
+		//as we will be running checks multiple times a frame so we cache the location
 		if (locationCache.containsKey(name))
 			return locationCache.get(name);
 		
@@ -49,7 +53,8 @@ public class Shader {
 		return result;
 	}
 	
-	//uniform variables help us provide data from the CPU
+	//uniform variables help us provide our shaders data from the CPU
+	//first find variable and then send the data
 	public void setUniform1i(String name, int value) {
 		if (!enabled) enable();
 		glUniform1i(getUniform(name), value);
@@ -75,7 +80,7 @@ public class Shader {
 	
 	public void setUniformMat4f(String name, Matrix4f matrix) {
 		if (!enabled) enable();
-		glUniformMatrix4fv(getUniform(name), false, matrix.toFloatBuffer());
+		glUniformMatrix4fv(getUniform(name), false, matrix.toFloatBuffer()); //false because we have already transposed,
 	}
 	
 	//bind the program
