@@ -1,5 +1,10 @@
 package com.devx.flappy.level;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Random;
+
 
 import com.devx.flappy.graphics.Shader;
 import com.devx.flappy.graphics.Texture;
@@ -96,17 +101,97 @@ public class Level {
 		if (control && collision()) {
 			bird.fall();
 			control = false;
+			bird.update();
+			 try {
+				getValue();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 			
 		//Reset when space is pressed and no control
-		if (!control && Input.isKeyDown(GLFW_KEY_SPACE))	
+		if (!control && Input.isKeyDown(GLFW_KEY_SPACE)) {
+			
+			
 			reset = true;
+		}
+			
+			
 		
 		//update time
 		time += 0.01f;
-		System.out.println("time"+time);
+		//System.out.println("time"+time);
 	}
 	
+	private void getValue() throws IOException{
+		// TODO Auto-generated method stub
+		
+		File f=new File("src/com/devx/flappy/highScore.txt");
+		String score="";
+		
+		
+		
+		FileReader in = null;
+	      FileWriter out = null;
+
+	      try {
+	         in = new FileReader(f);
+//	         out = new FileWriter("output.txt");
+	         
+	        
+	         int c;
+	         while ((c = in.read()) != -1) {
+	        	 Character ch=(char)c;
+	        	 System.out.println(ch);
+	        	 score+=ch.toString();
+	         }
+	      }finally {
+	         if (in != null) {
+	            in.close();
+	         }
+	
+	      }
+	      
+	      
+	      System.out.println("Score = " +score);
+	      
+	      if(score.isEmpty()) {
+	    	  score="0";
+	      }
+	      
+	      //check score and show message
+	      if(!score.isEmpty()) {
+	    	  Long highScore=Long.parseLong(score);
+	    	  Long newScore =new Float(time).longValue();
+	    	  if( newScore>highScore) {
+	    		  
+	    		  
+	    		  try {
+		    		  out=new FileWriter(f);
+		    		  out.write(newScore.toString());
+	    		  }
+	    		  
+	    		  finally {
+	    			  if(out!=null) {
+	    	    		  out.close();
+	    			  }
+	    		  }
+	    		  
+
+	    		  System.out.println("New Score "+newScore);
+	    		  System.out.println("Old HighScore "+highScore);
+	    	  }
+	    	  
+	      }
+	      
+	      
+	      
+	      
+		
+		
+	}
+
 	private void renderPipes() {
 		Shader.PIPE.enable();
 		Shader.PIPE.setUniform2f("bird", 0, bird.getY());

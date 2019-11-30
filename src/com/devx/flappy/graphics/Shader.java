@@ -36,7 +36,7 @@ public class Shader {
 		BIRD = new Shader("shaders/bird.vert", "shaders/bird.frag");
 		PIPE = new Shader("shaders/pipe.vert", "shaders/pipe.frag");
 		FADE = new Shader("shaders/fade.vert", "shaders/fade.frag");	
-	}
+	}	
 	
 	//get the location of the shader
 	public int getUniform(String name) {

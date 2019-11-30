@@ -7,7 +7,7 @@ public class FileUtils {
 
 		//it will read a file and return a string for shader
 		private FileUtils() {
-		
+			
 		}
 		
 		//load all data from file line by line and return as String

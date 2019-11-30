@@ -127,8 +127,7 @@ public class Main implements Runnable {
 			//it means per second
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;//for nest second
-				System.out.println(updates + " ups, " + frames + " fps");
-				//as we reset them every second
+ 				//as we reset them every second
 				updates = 0;
 				frames = 0;
 			}
